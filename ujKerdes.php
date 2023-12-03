@@ -102,28 +102,26 @@
         
     }
     //if ($_FILES["import"]["error"] == UPLOAD_ERR_OK) {   
-    if (isset($_POST["upload"])) {
-        $jsonContent = file_get_contents($_FILES["import"]["tmp_name"]);
-        $jsonData = json_decode($jsonContent);
-        foreach($jsonData as $item) {
-            $kerdes = $item->kerdes;
-            $helyes = (int)$item->helyes;
-            $valasz1 = $item->valasz1;
-            $valasz2 = $item->valasz2;    
-            $valasz3 = $item->valasz3;
-            $valasz4 = $item->valasz4;
-            $pont = (int)$item->pont;
-
-        }
+    if (isset($_POST["upload"])) {       
         try {
-            $sql = "INSERT INTO questions (question, correct, answer1, answer2, answer3, answer4, point)
-                VALUES ('$kerdes', '$helyes', '$valasz1', '$valasz2', '$valasz3', '$valasz4', '$pont')";         
-            $connDB->exec($sql);
+            $jsonContent = file_get_contents($_FILES["import"]["tmp_name"]);
+            $jsonData = json_decode($jsonContent);
+            foreach($jsonData as $item) {
+                $kerdes = $item->kerdes;
+                $helyes = (int)$item->helyes;
+                $valasz1 = $item->valasz1;
+                $valasz2 = $item->valasz2;    
+                $valasz3 = $item->valasz3;
+                $valasz4 = $item->valasz4;
+                $pont = (int)$item->pont;
+                $sql = "INSERT INTO questions (question, correct, answer1, answer2, answer3, answer4, point)
+                    VALUES ('$kerdes', '$helyes', '$valasz1', '$valasz2', '$valasz3', '$valasz4', '$pont')";         
+                $connDB->exec($sql);
+            }
             echo "<p id='success'>Kérdés felvéve</p>"; 
         } catch(PDOException $e) {
             echo "<p class=\"error\">Adatbázis hiba: {$e->getMessage()}</p>\n";
-        }
-        
+        }       
     }
     
 
